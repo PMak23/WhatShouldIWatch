@@ -186,7 +186,7 @@ const SPORTS = { // MLB interest lowered 0.1 -> -0.5 on Sept 26 (baseball moneyl
 };
 const DEFAULT_ON = ['nfl','cfb','mlb'];
 
-// Update this by hand once a week. Week 6 (Oct 10, 2026) comes straight from
+// Update this by hand once a week. Week 7 (Oct 17, 2026) comes straight from
 // Covers' "Top 25 Predictions: Watchability Ratings" (Rob Paul) — its X/5 rating is used as-is.
 // Key = both teams' abbreviations AS SHOWN IN THIS APP, sorted alphabetically,
 // joined with a dash, so it doesn't matter who's home/away.
@@ -194,25 +194,22 @@ const DEFAULT_ON = ['nfl','cfb','mlb'];
 // Keys = both ESPN abbreviations, sorted A-Z, joined by '-'. Use ESPN's exact codes
 // (TA&M not TXAM, MIZ not MIZZ, NCSU not NCST, IU/NU, BOIS) or the entry silently does nothing.
 const WATCHABILITY = {
-  'ALA-UGA':    5,   // Georgia at Alabama
-  'OU-TEX':     4,   // Texas vs Oklahoma (Dallas)
-  'ORE-UCLA':   4,   // UCLA at Oregon
-  'IU-NEB':     4,   // Indiana at Nebraska
-  'LSU-UK':     4,   // LSU at Kentucky
-  'BOIS-FRES':  4,   // Boise State at Fresno State
-  'IOWA-WASH':  3,   // Iowa at Washington (Fri)
-  'PSU-USC':    3,   // USC at Penn State
-  'MIZ-TA&M':   3,   // Texas A&M at Missouri
-  'MISS-VAN':   3,   // Ole Miss at Vanderbilt
-  'FLA-SC':     3,   // South Carolina at Florida
-  'HOU-KSU':    3,   // Houston at Kansas State
-  'BYU-ISU':    2,   // Iowa State at BYU (Fri)
-  'OKST-UCF':   2,   // UCF at Oklahoma State
-  'KU-UTAH':    2,   // Kansas at Utah
-  'ARK-TENN':   2,   // Tennessee at Arkansas
-  'PITT-UNC':   1,   // North Carolina at Pittsburgh
-  'ND-STAN':    1,   // Stanford at Notre Dame
-  'MD-OSU':     1,   // Maryland at Ohio State
+  'IU-OSU':     5,   // Ohio State at Indiana
+  'BYU-ND':     5,   // Notre Dame at BYU
+  'MISS-MIZ':   4,   // Missouri at Ole Miss
+  'ALA-TENN':   4,   // Alabama at Tennessee
+  'HOU-OKST':   4,   // Oklahoma State at Houston
+  'FLA-TEX':    4,   // Florida at Texas
+  'LSU-MSST':   4,   // Mississippi State at LSU
+  'UCLA-WIS':   4,   // Wisconsin at UCLA
+  'OU-UK':      3,   // Kentucky at Oklahoma
+  'ASU-TTU':    3,   // Arizona State at Texas Tech
+  'SMU-UVA':    3,   // Virginia at SMU
+  'AUB-UGA':    2,   // Auburn at Georgia
+  'FSU-MIA':    2,   // Florida State at Miami
+  'CAL-WAKE':   2,   // Wake Forest at Cal
+  'MSU-NU':     1,   // Northwestern at Michigan State
+  'COLO-UTAH':  1,   // Utah at Colorado
 };
 
 // Live playoff-SEEDING race, separate from the standings signal elsewhere in
