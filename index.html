@@ -144,6 +144,9 @@ const W = {
   preseason: -3.0,    // exhibition game (ESPN season type 1) — starters often sit
   seriesElim: 0.9,    // (was 0.5, raised Oct 7) ADDITIONAL, playoff series game where one team can be eliminated
   seriesDecider: 1.4, // (was 1.0, raised Oct 7) ADDITIONAL (instead of seriesElim), winner-take-all final game of a series
+  championship: 2.0,  // (added Oct 24) ADDITIONAL, title round: World Series, NBA/WNBA Finals, Stanley Cup Final, Super Bowl, MLS Cup, CFB title game
+  champImportanceFloor: 9.0, // Importance display never shows below this in a title-round game
+  semifinal: 1.0,     // (added Oct 24) ADDITIONAL, round before the title: ALCS/NLCS, conference finals, AFC/NFC title games, CFP/WNBA semis
   elimImportanceFloor: 8.0,    // Importance display never shows below this when one team faces elimination
   deciderImportanceFloor: 9.0, // Importance display never shows below this in a winner-take-all game
   national: 0.2,      // on national TV (kept minimal on purpose)
@@ -629,6 +632,18 @@ function rate(key, ev){
       }
       else why.push('Playoffs');
     } else why.push('Playoffs');
+    // Title round, read from ESPN's game note (e.g. "World Series - Game 2").
+    // Stacks with the series elimination/decider boosts above, so a Game 7 gets both.
+    const champNote = (c.notes||[]).map(n=>n.headline||'').find(h=>/world series|nba finals|wnba finals|stanley cup final|super bowl|mls cup|national championship/i.test(h));
+    if(champNote){
+      ctx += W.championship;
+      importanceFloor = Math.max(importanceFloor, W.champImportanceFloor);
+      const pi = why.indexOf('Playoffs'); const label = champNote.split(' - ')[0].trim();
+      if(pi>=0) why[pi] = label; else why.unshift(label);
+    } else {
+      const semiNote = (c.notes||[]).map(n=>n.headline||'').find(h=>/\bALCS\b|\bNLCS\b|conference finals?\b|AFC championship|NFC championship|semi-?finals?\b/i.test(h));
+      if(semiNote) ctx += W.semifinal;
+    }
   }
   // ESPN tags each league's blanket out-of-market streaming package as "national"
   // on every game, which isn't meaningful — ignore those entirely.
@@ -810,7 +825,7 @@ function rate(key, ev){
     else if(f>=0.5 && margin<=sp.unit){ why.unshift('One-score game'); } // halfway on; late = Down to the wire
     else if(sp.blowoutAt ? margin>=sp.blowoutAt[f<0.5?0:1] : close===0){ why.unshift('Blowout'); } // basketball: 30+ 1st half, 25+ 2nd half; others: 3+ scores
     const dogLeads = favHome!==null && margin>0 && ((favHome && as>hs) || (!favHome && hs>as));
-    if(dogLeads){ r += W.upsetBonus*dogScale; }
+    if(dogLeads){ r += W.upsetBonus*dogScale*(0.4+0.6*f); } // Oct 24: scaled by game progress — an underdog up 1 in the 3rd quarter was getting the full late-game upset bonus
     const dogTag = dogLeads && dogScale>=0.3;
     // a ranked team trailing is newsworthy on its own — separate from the odds-based
     // upset bonus above, since a team's ranking and its betting line don't always agree.
