@@ -678,7 +678,12 @@ function rate(key, ev){
   const wKey = [home.team.abbreviation, away.team.abbreviation].sort().join('-');
   if(WATCHABILITY[wKey]!=null){
     const wr = WATCHABILITY[wKey];
-    ctx += (wr-3)/2 * W.watchability; // 3 = no effect, 5 = full boost, 1 = full penalty
+    // Oct 24: this is a PREGAME prediction, so it fades out once the game is live —
+    // full weight before kickoff, half at halftime, zero by the final whistle.
+    // (A 5/5 game was getting the full +1.5 on top of ranked bonuses all game long,
+    // pushing a 3-0 2nd-quarter game to 9.0.)
+    const wFade = state==='pre' ? 1 : state==='in' ? 1 - progress(sp, st).f : 0;
+    ctx += (wr-3)/2 * W.watchability * wFade; // 3 = no effect, 5 = full boost, 1 = full penalty
     if(wr>=4) why.push('Marquee matchup');
   }
 
