@@ -189,7 +189,7 @@ const SPORTS = { // MLB interest lowered 0.1 -> -0.5 on Sept 26 (baseball moneyl
 };
 const DEFAULT_ON = ['nfl','cfb','mlb'];
 
-// Update this by hand once a week. Week 9 (Oct 31, 2026) comes straight from
+// Update this by hand once a week. Week 10 (Nov 7, 2026) comes straight from
 // Covers' "Top 25 Predictions: Watchability Ratings" (Rob Paul) — its X/5 rating is used as-is.
 // Key = both teams' abbreviations AS SHOWN IN THIS APP, sorted alphabetically,
 // joined with a dash, so it doesn't matter who's home/away.
@@ -197,24 +197,22 @@ const DEFAULT_ON = ['nfl','cfb','mlb'];
 // Keys = both ESPN abbreviations, sorted A-Z, joined by '-'. Use ESPN's exact codes
 // (TA&M not TXAM, MIZ not MIZZ, NCSU not NCST, IU/NU, BOIS) or the entry silently does nothing.
 const WATCHABILITY = {
-  'FLA-UGA':    5,   // Florida vs Georgia (Jacksonville)
-  'ARIZ-TTU':   5,   // Arizona at Texas Tech
-  'OSU-USC':    4,   // Ohio State at USC
-  'CIN-UTAH':   4,   // Utah at Cincinnati
-  'IOWA-WIS':   4,   // Wisconsin at Iowa
-  'AUB-MISS':   3,   // Auburn at Ole Miss
-  'IU-MINN':    3,   // Minnesota at Indiana
-  'NU-ORE':     3,   // Northwestern at Oregon
-  'BOIS-TXST':  3,   // Texas State at Boise State
-  'MIA-UNC':    2,   // Miami at North Carolina
-  'ASU-BYU':    2,   // Arizona State at BYU
-  'UVA-WAKE':   2,   // Virginia at Wake Forest
-  'ISU-OKST':   2,   // Oklahoma State at Iowa State
-  'ARK-MIZ':    2,   // Missouri at Arkansas
-  'SMU-SYR':    2,   // SMU at Syracuse
-  'MSST-TEX':   2,   // Mississippi State at Texas
-  'NEV-UCLA':   1,   // Nevada at UCLA
-  'NAVY-ND':    1,   // Notre Dame at Navy
+  'MIA-ND':    5,   // Miami at Notre Dame
+  'BYU-UTAH':  5,   // BYU at Utah
+  'ALA-LSU':   5,   // Alabama at LSU
+  'MISS-UGA':  5,   // Georgia at Ole Miss
+  'TENN-UK':   4,   // Kentucky at Tennessee
+  'MIZ-TEX':   4,   // Texas at Missouri
+  'ORE-OSU':   4,   // Oregon at Ohio State
+  'IOWA-NU':   3,   // Iowa at Northwestern
+  'MINN-UCLA': 3,   // UCLA at Minnesota
+  'FLA-OU':    3,   // Oklahoma at Florida
+  'CIN-HOU':   3,   // Cincinnati at Houston
+  'SC-TA&M':   3,   // Texas A&M at South Carolina
+  'TTU-WVU':   2,   // West Virginia at Texas Tech
+  'ARIZ-TCU':  2,   // TCU at Arizona
+  'BOIS-CSU':  1,   // Boise State at Colorado State
+  'MRMK-WAKE': 1,   // Merrimack at Wake Forest
 };
 
 // Live playoff-SEEDING race, separate from the standings signal elsewhere in
@@ -238,27 +236,27 @@ const PLAYOFF_RACE = {
 // actually plays out — search "[league] power rankings" for the current
 // week (ESPN, Sportsnaut, theScore all publish one) and replace the list.
 const TEAM_QUALITY = {
-  nfl: { // SportsBrackets.net consensus Power Rankings, Week 8 (Oct 27, 2026; avg of ESPN, CBS, Yahoo, Sportsnaut, WalterFootball) — 32 teams
-    BUF:1, SF:2, MIN:3, KC:4, SEA:5, CHI:6, JAX:7, CIN:8, DEN:9, DET:10,
-    NE:11, LAR:12, BAL:13, GB:14, CLE:15, PIT:16, ATL:17, NYG:18, CAR:19, HOU:20,
-    DAL:21, LV:22, TB:23, PHI:24, IND:25, ARI:26, NO:27, WSH:28, NYJ:29, MIA:30,
+  nfl: { // SportsBrackets.net consensus Power Rankings, Week 9 (Nov 3, 2026; avg of ESPN, PFN, Yahoo, Sharp Football, Bleacher Report) — 32 teams
+    BUF:1, SF:2, JAX:3, DEN:4, SEA:5, MIN:6, CHI:7, KC:8, CIN:9, DET:10,
+    PIT:11, NE:12, LAR:13, GB:14, TB:15, NYG:16, CAR:17, CLE:18, HOU:19, LV:20,
+    BAL:21, ATL:22, DAL:23, ARI:24, WSH:25, NYJ:26, NO:27, PHI:28, IND:29, MIA:30,
     TEN:31, LAC:32,
   },
-  nba: { // NBA.com Power Rankings (John Schuhmann), Week 2 (Oct 26, 2026) — 30 teams. Swap to ESPN's once it posts.
-    OKC:1, DET:2, MIN:3, HOU:4, PHI:5, SA:6, LAL:7, BOS:8, TOR:9, NY:10,
-    CLE:11, DEN:12, ATL:13, IND:14, POR:15, ORL:16, MEM:17, WSH:18, CHA:19, DAL:20,
-    MIA:21, PHX:22, UTAH:23, LAC:24, NO:25, GS:26, CHI:27, BKN:28, MIL:29, SAC:30,
+  nba: { // NBC Sports Power Rankings (Kurt Helin), Week 3 (Nov 2, 2026) — 30 teams. NBA.com was unreachable this week.
+    HOU:1, DET:2, PHI:3, BOS:4, MEM:5, LAL:6, SA:7, CLE:8, POR:9, DAL:10,
+    OKC:11, GS:12, MIN:13, TOR:14, NY:15, DEN:16, WSH:17, ATL:18, MIA:19, CHA:20,
+    IND:21, ORL:22, NO:23, UTAH:24, PHX:25, LAC:26, MIL:27, BKN:28, CHI:29, SAC:30,
   },
   mlb: { // MLB.com Power Rankings, final regular-season edition (Sept 21, 2026) — 30 teams
     MIL:1, LAD:2, TB:3, ATL:4, NYY:5, CHC:6, BOS:7, SD:8, PHI:9, CLE:10,
     CHW:11, TEX:12, ARI:13, HOU:14, TOR:15, PIT:16, BAL:17, MIA:18, DET:19, STL:20,
     WSH:21, SEA:22, NYM:23, MIN:24, CIN:25, KC:26, SF:27, LAA:28, ATH:29, COL:30,
   },
-  nhl: { // The Hockey News Power Rankings (Jason Chen), Oct 28, 2026 — 32 teams. THN updates every Wednesday.
-    CAR:1, MIN:2, EDM:3, BOS:4, UTAH:5, VGK:6, COL:7, TB:8, NJ:9, DAL:10,
-    MTL:11, OTT:12, FLA:13, SEA:14, WSH:15, NYI:16, BUF:17, TOR:18, NYR:19, SJ:20,
-    STL:21, PIT:22, NSH:23, CGY:24, DET:25, CBJ:26, CHI:27, ANA:28, WPG:29, LA:30,
-    PHI:31, VAN:32,
+  nhl: { // The Hockey News Power Rankings (Jason Chen), Nov 4, 2026 — 32 teams. THN updates every Wednesday.
+    CAR:1, EDM:2, MIN:3, BOS:4, UTAH:5, NJ:6, DAL:7, MTL:8, FLA:9, COL:10,
+    TB:11, VGK:12, BUF:13, NYI:14, SEA:15, WSH:16, OTT:17, TOR:18, NYR:19, CGY:20,
+    NSH:21, STL:22, DET:23, CBJ:24, ANA:25, SJ:26, LA:27, PIT:28, WPG:29, PHI:30,
+    CHI:31, VAN:32,
   },
 };
 
