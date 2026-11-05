@@ -215,6 +215,29 @@ const WATCHABILITY = {
   'MRMK-WAKE': 1,   // Merrimack at Wake Forest
 };
 
+// College basketball version of the list above, CBB games only. No outlet rates CBB
+// games 1-5, so this is built from expert must-watch lists (Nov 5, 2026): CBB Review's
+// 100 November games, Yahoo's top November nonconference games, Forbes' 5 games to watch,
+// The Big Big East Blog's top 10. On 3+ lists = 5, on 2 lists = 4, on 1 list = left off (neutral).
+// Covers November only. Refresh weekly; remove games once played. Same key rules (ESPN codes, A-Z).
+const CBB_WATCHABILITY = {
+  'CONN-MICH': 5,   // UConn vs Michigan, Fri 11/6 (Boston) — 3 lists
+  'MSU-TENN':  5,   // Michigan State at Tennessee, Tue 11/17 — 3 lists
+  'CONN-DUKE': 5,   // UConn vs Duke, Wed 11/25 (Las Vegas) — 3 lists
+  'KU-VILL':   5,   // Villanova at Kansas, Fri 11/27 — 3 lists
+  'ARK-UVA':   4,   // Arkansas vs Virginia, Sun 11/8 (D.C.)
+  'DUKE-MSU':  4,   // Michigan State vs Duke, Tue 11/10 (Champions Classic)
+  'KU-UK':     4,   // Kansas vs Kentucky, Tue 11/10 (Champions Classic)
+  'ILL-TTU':   4,   // Illinois at Texas Tech, Tue 11/10
+  'MARQ-MICH': 4,   // Marquette at Michigan, Wed 11/11
+  'ALA-HALL':  4,   // Seton Hall at Alabama, Fri 11/13
+  'MARQ-MIZ':  4,   // Marquette vs Missouri, Sun 11/15 (Chicago)
+  'DUKE-ILL':  4,   // Illinois at Duke, Tue 11/17
+  'ARK-IU':    4,   // Arkansas vs Indiana, Tue 11/17 (MSG)
+  'ARIZ-CONN': 4,   // UConn at Arizona, Wed 11/18
+  'ARK-MSU':   4,   // Arkansas vs Michigan State, Thu 11/26 (Detroit)
+};
+
 // Live playoff-SEEDING race, separate from the standings signal elsewhere in
 // this file. That signal only measures "will this team make the playoffs at
 // all" (playoff-percent) — it goes quiet once a team is basically locked in,
@@ -675,8 +698,11 @@ function rate(key, ev){
 
   // hand-maintained watchability list (see WATCHABILITY above)
   const wKey = [home.team.abbreviation, away.team.abbreviation].sort().join('-');
-  if(WATCHABILITY[wKey]!=null){
-    const wr = WATCHABILITY[wKey];
+  // Nov 5: each list is scoped to its own sport so codes can't collide across leagues
+  // (e.g. CFB 'CIN-HOU' was also matching an NFL Bengals-Texans game).
+  const wList = key==='cfb' ? WATCHABILITY : key==='cbb' ? CBB_WATCHABILITY : null;
+  if(wList && wList[wKey]!=null){
+    const wr = wList[wKey];
     // Oct 24: this is a PREGAME prediction, so it fades out once the game is live —
     // full weight before kickoff, half at halftime, zero by the final whistle.
     // (A 5/5 game was getting the full +1.5 on top of ranked bonuses all game long,
