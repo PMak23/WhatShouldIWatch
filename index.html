@@ -1026,7 +1026,7 @@ function card(g){
       <div class="teams">${team(g.away,g.as,g.as>=g.hs,g.state)}${team(g.home,g.hs,g.hs>=g.as,g.state)}</div>
       <div class="status">${statusText(g)}</div>
       ${netLines?`<div class="nets">${netLines}</div>`:''}
-      ${g.line && g.line.line?`<div class="line">${g.state==='pre'?'Line':'Pregame line'}: ${g.line.line}</div>`:''}
+      ${g.line && g.line.line?`<div class="line">Pregame line: ${g.line.line}</div>`:''}
       ${g.line && g.line.ml?`<div class="line">ML: ${g.line.ml}</div>`:''}
       ${g.why.length?`<div class="why">${g.why.join(', ')}<span class="chevron">${isOpen?'▲':'▼'}</span></div>`:`<div class="why">&nbsp;<span class="chevron">${isOpen?'▲':'▼'}</span></div>`}
       <div class="breakdown">${sub('Competitiveness',g.comp)}${sub('Importance',g.stakes)}${sub('Drama',g.drama)}</div>
