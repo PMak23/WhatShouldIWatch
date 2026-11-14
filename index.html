@@ -371,13 +371,33 @@ async function fetchEspn(path){
 // so it's saved once per game: from the scoreboard while the game is still 'pre', or
 // from the game's summary page (pickcenter) if the app first sees it already live/final.
 // Stored in the same shape as a scoreboard odds object so rate() reads it unchanged.
+// Nov 14: entries are slimmed to just the fields the app reads and stamped with the
+// time they were saved (_t). Trimming used to delete by Object.keys order, but game ids
+// are numbers, so JS sorts them numerically — CFB ids are the lowest of any league, so
+// once the cache passed 400 games (CBB adds ~70 a day) every CFB line was deleted the
+// moment it was saved, and live CFB games lost their pregame line.
+function slimOdds(o){
+  if(!o) return null;
+  const m = o.moneyline||{}, c = side => ({close:{odds: m[side] && m[side].close ? m[side].close.odds : null}});
+  return { spread:o.spread, details:o.details, overUnder:o.overUnder,
+    homeTeamOdds:{favorite:!!(o.homeTeamOdds&&o.homeTeamOdds.favorite)}, awayTeamOdds:{favorite:!!(o.awayTeamOdds&&o.awayTeamOdds.favorite)},
+    moneyline:{home:c('home'), away:c('away'), draw:c('draw')},
+    drawOdds: o.drawOdds && o.drawOdds.moneyLine!=null ? {moneyLine:o.drawOdds.moneyLine} : undefined,
+    _t: Date.now() };
+}
 let pregameOdds = {};
 try{ pregameOdds = JSON.parse(localStorage.getItem('whatsOn.pregameOdds')) || {}; }catch(e){}
-const oddsTried = new Set(); // summary lookups already attempted this session (incl. failures)
+Object.keys(pregameOdds).forEach(id=>{ if(pregameOdds[id] && pregameOdds[id]._t==null){ pregameOdds[id] = slimOdds(pregameOdds[id]); pregameOdds[id]._t = 0; } }); // old full-size entries
+const oddsTried = new Map(); // game id -> time of last summary lookup this session
+const ODDS_RETRY_MS = 2*60*1000; // a failed lookup (network/no line yet) is retried after 2 minutes
+const ODDS_CACHE_MAX = 1500;
 function savePregameOdds(){
-  // keep only the most recent ~400 games so storage doesn't grow forever
+  // keep the most recently saved games so storage doesn't grow forever
   const ids = Object.keys(pregameOdds);
-  if(ids.length > 400) ids.slice(0, ids.length-400).forEach(id=>delete pregameOdds[id]);
+  if(ids.length > ODDS_CACHE_MAX){
+    ids.sort((a,b)=>(pregameOdds[a]._t||0)-(pregameOdds[b]._t||0))
+       .slice(0, ids.length-ODDS_CACHE_MAX).forEach(id=>delete pregameOdds[id]);
+  }
   try{ localStorage.setItem('whatsOn.pregameOdds', JSON.stringify(pregameOdds)); }catch(e){}
 }
 function oddsFromPick(pk){
@@ -397,17 +417,17 @@ async function fillPregameOdds(key, events){
     const c = (ev.competitions||[])[0]; if(!c) return;
     const state = ev.status && ev.status.type && ev.status.type.state;
     const live = (c.odds||[])[0];
-    if(state==='pre'){ if(live){ pregameOdds[ev.id] = live; changed = true; } return; }
-    if(live || pregameOdds[ev.id] || oddsTried.has(ev.id)) return;
+    if(state==='pre'){ if(live){ pregameOdds[ev.id] = slimOdds(live); changed = true; } return; }
+    if(live || pregameOdds[ev.id] || Date.now() - (oddsTried.get(ev.id)||0) < ODDS_RETRY_MS) return;
     need.push(ev.id);
   });
   const base = sp.path.split('?')[0].replace(/scoreboard$/, 'summary');
   await Promise.all(need.map(async id=>{
-    oddsTried.add(id);
+    oddsTried.set(id, Date.now());
     try{
       const j = await fetchEspn(base + '?event=' + id);
       const od = oddsFromPick((j.pickcenter||[])[0]);
-      if(od){ pregameOdds[id] = od; changed = true; }
+      if(od){ pregameOdds[id] = slimOdds(od); changed = true; }
     }catch(e){}
   }));
   if(changed) savePregameOdds();
