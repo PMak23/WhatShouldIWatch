@@ -190,34 +190,38 @@ const SPORTS = { // MLB interest lowered 0.1 -> -0.5 on Sept 26 (baseball moneyl
 };
 const DEFAULT_ON = ['nfl','cfb','mlb'];
 
-// Update this by hand once a week. Week 11 (Nov 13-14, 2026) comes straight from
-// Covers' "Top 25 Predictions: Watchability Ratings" (updated Nov 12) — its X/5 rating is used as-is.
+// Update this by hand once a week. Week 12 (Nov 20-21, 2026) comes straight from
+// Covers' "Top 25 Predictions: Watchability Ratings" (updated Nov 19) — its X/5 rating is used as-is.
 // Key = both teams' abbreviations AS SHOWN IN THIS APP, sorted alphabetically,
 // joined with a dash, so it doesn't matter who's home/away.
 // Scale: 5 = must-watch, 3 = average (no effect), 1 = skip it.
 // Keys = both ESPN abbreviations, sorted A-Z, joined by '-'. Use ESPN's exact codes
 // (TA&M not TXAM, MIZ not MIZZ, NCSU not NCST, IU/NU, BOIS) or the entry silently does nothing.
 const WATCHABILITY = {
-  'LSU-TEX':   5,   // Texas at LSU
-  'IU-USC':    5,   // USC at Indiana
-  'ARIZ-UTAH': 5,   // Utah at Arizona
-  'OKST-TTU':  4,   // Texas Tech at Oklahoma State
-  'SMU-WAKE':  4,   // Wake Forest at SMU
-  'MIZ-UGA':   4,   // Missouri at Georgia
-  'DUKE-MIA':  4,   // Duke at Miami
-  'BAY-BYU':   3,   // Baylor at BYU
-  'NU-OSU':    3,   // Northwestern at Ohio State
-  'FLA-UK':    3,   // Florida at Kentucky
-  'ILL-UCLA':  3,   // Illinois at UCLA (Fri)
-  'MISS-OU':   3,   // Ole Miss at Oklahoma
-  'MICH-ORE':  3,   // Michigan at Oregon
-  'BOIS-ORST': 3,   // Oregon State at Boise State
-  'TA&M-TENN': 2,   // Tennessee at Texas A&M
-  'ALA-VAN':   2,   // Alabama at Vanderbilt
-  'ARK-SC':    1,   // South Carolina at Arkansas
-  'IOWA-PUR':  1,   // Purdue at Iowa
-  'COLO-HOU':  1,   // Houston at Colorado (Fri)
-  'BC-ND':     1,   // Boston College at Notre Dame
+  'LSU-TENN':  5,   // LSU at Tennessee
+  'SC-UGA':    4,   // Georgia at South Carolina
+  'NEB-OSU':   4,   // Ohio State at Nebraska
+  'ND-SMU':    3,   // SMU at Notre Dame
+  'MIZ-UK':    3,   // Kentucky at Missouri
+  'HOU-WVU':   3,   // Houston at West Virginia
+  'BAY-TTU':   3,   // Texas Tech at Baylor
+  'MICH-UCLA': 3,   // UCLA at Michigan
+  'IU-WASH':   3,   // Indiana at Washington
+  'OU-TA&M':   3,   // Texas A&M at Oklahoma
+  'ILL-IOWA':  2,   // Iowa at Illinois
+  'MIA-VT':    2,   // Virginia Tech at Miami
+  'BOIS-SDSU': 2,   // San Diego State at Boise State
+  'ARK-TEX':   2,   // Arkansas at Texas
+  'MD-USC':    2,   // Maryland at USC
+  'FLA-VAN':   2,   // Vanderbilt at Florida
+  'LOU-PITT':  2,   // Pitt at Louisville
+  'BYU-KU':    2,   // BYU at Kansas
+  'ARIZ-KSU':  2,   // Arizona at Kansas State
+  'TCU-UTAH':  2,   // Utah at TCU
+  'MSU-ORE':   2,   // Oregon at Michigan State (Fri)
+  'GT-WAKE':   1,   // Wake Forest at Georgia Tech
+  'MISS-WOF':  1,   // Wofford at Ole Miss
+  'ALA-UTC':   1,   // Chattanooga at Alabama
 };
 
 // College basketball version of the list above, CBB games only. No outlet rates CBB
